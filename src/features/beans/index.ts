@@ -2,11 +2,11 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { Status } from "src/types";
 import { Beans, BeansState } from "./types";
-import { INITIAL_BEANS_ID } from "@env";
+import { EXPO_PUBLIC_INITIAL_BEANS_ID, EXPO_PUBLIC_HEADER_TITLE } from "@env";
 
 export const initialState: BeansState = {
-  id: INITIAL_BEANS_ID,
-  label: process.env.REACT_APP_HEADER_TITLE,
+  id: EXPO_PUBLIC_INITIAL_BEANS_ID,
+  label: EXPO_PUBLIC_HEADER_TITLE,
   amount: 0,
   status: "loading",
 };

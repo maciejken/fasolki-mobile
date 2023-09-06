@@ -1,0 +1,22 @@
+{
+  "cli": {
+    "version": ">= 5.1.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_HEADER_TITLE": "Fasolki",
+        "EXPO_PUBLIC_INITIAL_BEANS_ID": "fasolki_jasia"
+      }
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {}
+  }
+}

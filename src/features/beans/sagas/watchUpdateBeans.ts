@@ -7,6 +7,7 @@ import { Beans } from "../types";
 
 export function* onUpdateBeans(action: PayloadAction<number>) {
   try {
+    console.log('updating beans...')
     const beansId: string = yield select(selectBeansId);
     yield put({ type: "beans/setStatus", payload: "loading" });
     const beans: Beans = yield call(fetchBeans, beansId);
@@ -16,7 +17,9 @@ export function* onUpdateBeans(action: PayloadAction<number>) {
     });
     yield put(updateSuccess(updatedBeans));
     yield put({ type: "beans/setStatus", payload: "success" });
+    console.log('beans updated!')
   } catch (error) {
+    console.log('updating beans failed!')
     yield put({ type: "beans/updateFailed" });
     yield put({ type: "beans/setStatus", payload: "failed" });
   }
