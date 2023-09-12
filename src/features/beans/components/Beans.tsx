@@ -2,7 +2,7 @@ import { ActivityIndicator, StyleSheet, Text, TouchableHighlight, View } from "r
 import { BeansProps } from "../types";
 import { useEffect } from "react";
 
-export default function Beans({ amount, status, fetchBeans, updateAmount }: BeansProps) {
+export default function Beans({ amount, status, updatedDate, fetchBeans, updateAmount }: BeansProps) {
   const updateByValue = (amount: number) => {
     if ('function' === typeof updateAmount) {
       updateAmount(amount);
@@ -32,24 +32,31 @@ export default function Beans({ amount, status, fetchBeans, updateAmount }: Bean
       fetchBeans();
     }
   }, []);
+  
   return (
-    <View style={styles.container}>
-      <TouchableHighlight style={styles.btn} onPress={handleDecrement} onLongPress={handleDecrementLong}>
-        <View><Text style={styles.btnTxt}>-</Text></View>
-      </TouchableHighlight>
-      <View style={styles.content}>
-        {isLoading && <ActivityIndicator color="#f06" />}
-        {!isLoading && <Text style={styles.contentTxt} onPress={fetchBeans}>{amount}</Text>}
+    <View style={styles.col}>
+      <View style={styles.row}>
+        <TouchableHighlight style={styles.btn} onPress={handleDecrement} onLongPress={handleDecrementLong}>
+          <View><Text style={styles.btnTxt}>-</Text></View>
+        </TouchableHighlight>
+        <View style={styles.content}>
+          {isLoading && <ActivityIndicator color="#f06" />}
+          {!isLoading && <Text style={styles.contentTxt} onPress={fetchBeans}>{amount}</Text>}
+        </View>
+        <TouchableHighlight style={styles.btn} onPress={handleIncrement} onLongPress={handleIncrementLong}>
+          <View><Text style={styles.btnTxt}>+</Text></View>
+        </TouchableHighlight>
       </View>
-      <TouchableHighlight style={styles.btn} onPress={handleIncrement} onLongPress={handleIncrementLong}>
-        <View><Text style={styles.btnTxt}>+</Text></View>
-      </TouchableHighlight>
+      {updatedDate && <View style={styles.row}><Text style={styles.updatedDate}>Ostatnia zmiana: {updatedDate}</Text></View>}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  col: {
+    alignItems: 'center'
+  },
+  row: {
     margin: 12,
     flexDirection: 'row',
     alignItems: 'center',
@@ -74,5 +81,8 @@ const styles = StyleSheet.create({
   },
   contentTxt: {
     fontSize: 24,
+  },
+  updatedDate: {
+    color: '#888',
   }
 })

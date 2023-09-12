@@ -14,6 +14,7 @@ export function* onUpdateBeans(action: PayloadAction<number>) {
     const updatedBeans: Beans = yield call(updateBeans, beansId, {
       ...beans,
       amount: beans.amount + action.payload,
+      updatedDate: new Date().toISOString(),
     });
     yield put(updateSuccess(updatedBeans));
     yield put({ type: "beans/setStatus", payload: "success" });

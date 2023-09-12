@@ -8,6 +8,7 @@ export const initialState: BeansState = {
   id: EXPO_PUBLIC_INITIAL_BEANS_ID,
   label: EXPO_PUBLIC_HEADER_TITLE,
   amount: 0,
+  updatedDate: undefined,
   status: "loading",
 };
 
@@ -22,11 +23,13 @@ const beansSlice = createSlice({
       state.amount = action.payload.amount;
       state.id = action.payload.id;
       state.label = action.payload.label;
+      state.updatedDate = action.payload.updatedDate;
     },
     updateSuccess: (state: BeansState, action: PayloadAction<Beans>) => {
       state.amount = action.payload.amount;
       state.id = action.payload.id;
       state.label = action.payload.label;
+      state.updatedDate = action.payload.updatedDate;
     },
   },
 });

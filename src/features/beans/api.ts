@@ -19,7 +19,7 @@ export const updateBeans = async (
   beansUpdate: Partial<Beans>
 ): Promise<Beans> => {
   const docRef = doc(db, "beans", docId);
-  await updateDoc(docRef, { amount: beansUpdate.amount });
+  await updateDoc(docRef, beansUpdate);
   return {
     id: docId,
     amount: beansUpdate.amount,
