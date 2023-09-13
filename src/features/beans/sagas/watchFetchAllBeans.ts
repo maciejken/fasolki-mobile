@@ -1,25 +1,23 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
-import { fetchBeans } from "../api";
-import { fetchSuccess } from "..";
-import { selectBeansId } from "../selectors";
+import { fetchAllBeans } from "../api";
+import { fetchAllSuccess } from "..";
 import { Beans } from "../types";
 
-export function* onFetchBeans() {
+export function* onFetchAllBeans() {
   try {
     console.log("fetching beans...");
-    const beansId: string = yield select(selectBeansId);
     yield put({ type: "beans/setStatus", payload: "loading" });
-    const beans: Beans = yield call(fetchBeans, beansId);
-    yield put(fetchSuccess(beans));
+    const allBeans: Beans[] = yield call(fetchAllBeans);
+    yield put(fetchAllSuccess(allBeans));
     yield put({ type: "beans/setStatus", payload: "success" });
     console.log("beans fetched!");
   } catch (error) {
     console.log("error fetching beans!");
-    yield put({ type: "beans/fetchFailed" });
+    yield put({ type: "beans/fetchAllFailed" });
     yield put({ type: "beans/setStatus", payload: "failed" });
   }
 }
 
 export default function* watchFetchBeans() {
-  yield takeLatest("beans/fetch", onFetchBeans);
+  yield takeLatest("beans/fetchAll", onFetchAllBeans);
 }

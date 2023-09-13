@@ -7,7 +7,6 @@ export default function App() {
   return (
     <Provider store={store}>
       <View style={styles.container}>
-        <Text>Fasolki</Text>
         <Beans />
       </View>
     </Provider>

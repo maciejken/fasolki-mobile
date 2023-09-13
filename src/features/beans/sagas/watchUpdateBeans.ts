@@ -1,27 +1,27 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, select, takeEvery } from "redux-saga/effects";
-import { updateSuccess } from "..";
 import { fetchBeans, updateBeans } from "../api";
-import { selectBeansId } from "../selectors";
 import { Beans } from "../types";
+import { selectCurrentBeans } from "../selectors";
 
 export function* onUpdateBeans(action: PayloadAction<number>) {
   try {
-    console.log('updating beans...')
-    const beansId: string = yield select(selectBeansId);
-    yield put({ type: "beans/setStatus", payload: "loading" });
-    const beans: Beans = yield call(fetchBeans, beansId);
-    const updatedBeans: Beans = yield call(updateBeans, beansId, {
-      ...beans,
-      amount: beans.amount + action.payload,
-      updatedDate: new Date().toISOString(),
-    });
-    yield put(updateSuccess(updatedBeans));
-    yield put({ type: "beans/setStatus", payload: "success" });
+    console.log('updating beans...');
+    const currentBeans: Beans | undefined = yield select(selectCurrentBeans);
+    if (currentBeans) {
+      yield put({ type: "beans/setStatus", payload: "loading" });
+      const beans: Beans = yield call(fetchBeans, currentBeans.id);
+      if (currentBeans.amount !== beans.amount) {
+        throw new Error(`Wartość (amount: ${currentBeans.amount}) dokumentu '${currentBeans.id}' jest nieaktualna!`);
+      }
+      yield call(updateBeans, currentBeans.id, {
+        amount: currentBeans.amount + action.payload,
+        updatedDate: new Date().toISOString(),
+      });
+      yield put({ type: "beans/fetchAll" });
+    }
     console.log('beans updated!')
   } catch (error) {
-    console.log('updating beans failed!')
-    yield put({ type: "beans/updateFailed" });
     yield put({ type: "beans/setStatus", payload: "failed" });
   }
 }

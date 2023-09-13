@@ -1,21 +1,23 @@
-import { useSelector } from "react-redux";
-import Beans from "./Beans";
-import { selectBeansAmount, selectBeansStatus, selectBeansUpdatedDate } from "../selectors";
-import { useAppDispatch } from "src/app/hooks";
-import { fetchBeans, updateAmount } from "..";
+import BeansComponent from "./Beans";
+import { selectCurrentBeans, selectBeansStatus, selectCurrentBeansUpdatedDate } from "../selectors";
+import { useAppDispatch, useAppSelector } from "src/app/hooks";
+import { fetchAllBeans, updateAmount } from "..";
+import { Status } from "src/types";
+import { Beans } from "../types";
 
 export default function () {
   const dispatch = useAppDispatch();
-  const beansAmount = useSelector(selectBeansAmount);
-  const beansStatus = useSelector(selectBeansStatus);
-  const beansUpdatedDate = useSelector(selectBeansUpdatedDate);
+  const currentBeans: Beans | undefined = useAppSelector(selectCurrentBeans);
+  const beansStatus: Status = useAppSelector(selectBeansStatus);
+  const beansUpdatedDate: string | undefined = useAppSelector(selectCurrentBeansUpdatedDate);
   return (
-    <Beans
-      amount={beansAmount}
+    <BeansComponent
+      label={currentBeans?.label}
+      amount={currentBeans?.amount}
       updatedDate={beansUpdatedDate}
       status={beansStatus}
-      fetchBeans={() => {
-        dispatch(fetchBeans());
+      fetchAll={() => {
+        dispatch(fetchAllBeans());
       }}
       updateAmount={(amount: number) => {
         dispatch(updateAmount(amount));

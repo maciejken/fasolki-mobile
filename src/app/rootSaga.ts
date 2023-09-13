@@ -1,12 +1,12 @@
 import { all } from "redux-saga/effects";
-import watchFetchBeans from "../features/beans/sagas/watchFetchBeans";
+import watchFetchAllBeans from "../features/beans/sagas/watchFetchAllBeans";
 import watchUpdateBeans from "../features/beans/sagas/watchUpdateBeans";
 
 // Create rootSaga to combine all sagas
 function* rootSaga() {
   yield all([
     // Add your sagas here
-    watchFetchBeans(),
+    watchFetchAllBeans(),
     watchUpdateBeans(),
   ]);
 }
