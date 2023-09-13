@@ -29,12 +29,7 @@ export const fetchBeans = async (docId: string): Promise<Beans> => {
 export const updateBeans = async (
   docId: string,
   beansUpdate: Partial<Beans>
-): Promise<Beans> => {
+): Promise<void> => {
   const docRef = doc(db, "beans", docId);
   await updateDoc(docRef, beansUpdate);
-  return {
-    id: docId,
-    amount: beansUpdate.amount,
-    label: beansUpdate.label,
-  } as Beans;
 };

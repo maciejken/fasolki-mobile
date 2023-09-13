@@ -6,9 +6,9 @@ import { selectCurrentBeans } from "../selectors";
 
 export function* onUpdateBeans(action: PayloadAction<number>) {
   try {
-    console.log('updating beans...');
     const currentBeans: Beans | undefined = yield select(selectCurrentBeans);
     if (currentBeans) {
+      console.log('updating beans...');
       yield put({ type: "beans/setStatus", payload: "loading" });
       const beans: Beans = yield call(fetchBeans, currentBeans.id);
       if (currentBeans.amount !== beans.amount) {
@@ -18,9 +18,11 @@ export function* onUpdateBeans(action: PayloadAction<number>) {
         amount: currentBeans.amount + action.payload,
         updatedDate: new Date().toISOString(),
       });
+      console.log('beans updated!')
       yield put({ type: "beans/fetchAll" });
+    } else {
+      throw new Error(`Nie mozna zaktualizować: brak dokumentu!`);
     }
-    console.log('beans updated!')
   } catch (error) {
     yield put({ type: "beans/setStatus", payload: "failed" });
   }
