@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { store } from "./src/app/store";
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import Beans from 'src/features/beans/components';
 
 export default function App() {
@@ -16,7 +16,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 25,
-    backgroundColor: '#fff',
+    paddingTop: StatusBar.currentHeight,
   },
 });
