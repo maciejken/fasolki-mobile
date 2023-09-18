@@ -1,27 +1,29 @@
-import BeansComponent from "./Beans";
-import { selectCurrentBeans, selectBeansStatus, selectCurrentBeansUpdatedDate } from "../selectors";
+import { selectAllBeans, selectBeansStatus } from "../selectors";
 import { useAppDispatch, useAppSelector } from "src/app/hooks";
 import { fetchAllBeans, updateAmount } from "..";
 import { Status } from "src/types";
-import { Beans } from "../types";
+import { Beans, BeansUpdate } from "../types";
+import BeansList from "./BeansList";
 
-export default function () {
+function BeansConnector() {
   const dispatch = useAppDispatch();
-  const currentBeans: Beans | undefined = useAppSelector(selectCurrentBeans);
+
+  const allBeans: Beans[] = useAppSelector(selectAllBeans);
   const beansStatus: Status = useAppSelector(selectBeansStatus);
-  const beansUpdatedDate: string | undefined = useAppSelector(selectCurrentBeansUpdatedDate);
+
+  const handleUpdateItemAmount = ({ id, amount }: BeansUpdate) => {
+    dispatch(updateAmount({ id, amount }));
+  };
   return (
-    <BeansComponent
-      label={currentBeans?.label}
-      amount={currentBeans?.amount}
-      updatedDate={beansUpdatedDate}
+    <BeansList
+      items={allBeans}
       status={beansStatus}
       fetchAll={() => {
         dispatch(fetchAllBeans());
       }}
-      updateAmount={(amount: number) => {
-        dispatch(updateAmount(amount));
-      }}
+      updateItemAmount={handleUpdateItemAmount}
     />
   );
 }
+
+export default BeansConnector;

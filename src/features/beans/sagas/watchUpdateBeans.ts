@@ -1,30 +1,34 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import { fetchBeans, updateBeans } from "../api";
-import { Beans } from "../types";
-import { selectCurrentBeans } from "../selectors";
+import { Beans, BeansUpdate } from "../types";
+import { selectAllBeans } from "../selectors";
 
-export function* onUpdateBeans(action: PayloadAction<number>) {
+export function* onUpdateBeans(action: PayloadAction<BeansUpdate>) {
+  const { id, amount } = action.payload;
   try {
-    const currentBeans: Beans | undefined = yield select(selectCurrentBeans);
-    if (currentBeans) {
-      console.log('updating beans...');
-      yield put({ type: "beans/setStatus", payload: "loading" });
-      const beans: Beans = yield call(fetchBeans, currentBeans.id);
-      if (currentBeans.amount !== beans.amount) {
-        throw new Error(`Wartość (amount: ${currentBeans.amount}) dokumentu '${currentBeans.id}' jest nieaktualna!`);
-      }
-      yield call(updateBeans, currentBeans.id, {
-        amount: currentBeans.amount + action.payload,
-        updatedDate: new Date().toISOString(),
-      });
-      console.log('beans updated!')
-      yield put({ type: "beans/fetchAll" });
-    } else {
-      throw new Error(`Nie mozna zaktualizować: brak dokumentu!`);
+    console.log("updating beans...");
+    yield put({ type: "beans/setStatus", payload: "loading" });
+    const allBeans: Beans[] = yield select(selectAllBeans);
+    const currentAmount: number | undefined = allBeans?.find((item: Beans) => item.id === id)?.amount;
+    const beans: Beans = yield call(fetchBeans, id);
+
+    if (currentAmount && currentAmount !== beans.amount) {
+      throw new Error(
+        `Wartość (amount: ${amount}) dokumentu '${id}' jest nieaktualna!`
+      );
     }
+
+    yield call(updateBeans, id, {
+      amount: beans.amount + amount,
+      updatedDate: new Date().toISOString(),
+    });
+    
+    console.log("beans updated!");
+    yield put({ type: "beans/fetchAll" });
   } catch (error) {
     yield put({ type: "beans/setStatus", payload: "failed" });
+    console.log("update failed!")
   }
 }
 

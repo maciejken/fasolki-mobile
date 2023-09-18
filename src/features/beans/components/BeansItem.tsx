@@ -1,18 +1,18 @@
 import { ActivityIndicator, StyleSheet, Text, TouchableHighlight, View } from "react-native";
-import { BeansProps } from "../types";
-import { useEffect } from "react";
+import { BeansItemProps } from "./types";
 
 export default function Beans({
+  id,
   label,
   amount,
-  status,
+  isLoading,
   updatedDate,
-  fetchAll,
-  updateAmount
-}: BeansProps) {
+  updateAmount,
+}: BeansItemProps) {
+
   const updateByValue = (amount: number) => {
     if ('function' === typeof updateAmount) {
-      updateAmount(amount);
+      updateAmount({ id, amount });
     }
   };
 
@@ -31,14 +31,6 @@ export default function Beans({
   const handleDecrementLong = () => {
     updateByValue(-5);
   };
-
-  const isLoading: boolean = status === 'loading';
-
-  useEffect(() => {
-    if ("function" === typeof fetchAll) {
-      fetchAll();
-    }
-  }, []);
   
   return (
     <View style={styles.col}>
@@ -49,7 +41,7 @@ export default function Beans({
         </TouchableHighlight>
         <View style={styles.content}>
           {isLoading && <ActivityIndicator color="#f06" />}
-          {!isLoading && <Text style={styles.contentTxt} onPress={fetchAll}>{amount}</Text>}
+          {!isLoading && <Text style={styles.contentTxt}>{amount}</Text>}
         </View>
         <TouchableHighlight style={styles.btn} onPress={handleIncrement} onLongPress={handleIncrementLong}>
           <View><Text style={styles.btnTxt}>+</Text></View>
@@ -63,6 +55,8 @@ export default function Beans({
 
 const styles = StyleSheet.create({
   col: {
+    marginTop: 25,
+    marginBottom: 25,
     alignItems: 'center'
   },
   row: {
