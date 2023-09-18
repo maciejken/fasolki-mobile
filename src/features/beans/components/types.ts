@@ -14,6 +14,5 @@ export interface BeansItemProps {
   isLoading: Boolean;
   label?: string;
   updatedDate?: string;
-  sortIndex?: number;
   updateAmount?: (update: BeansUpdate) => void;
 }
