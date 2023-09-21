@@ -33,27 +33,39 @@ export default function Beans({
   };
   
   return (
-    <View style={styles.col}>
-      <View style={styles.row}><Text style={styles.label}>{label}</Text></View>
-      <View style={styles.row}>
-        <TouchableHighlight style={styles.btn} onPress={handleDecrement} onLongPress={handleDecrementLong}>
-          <View><Text style={styles.btnTxt}>-</Text></View>
-        </TouchableHighlight>
-        <View style={styles.content}>
-          {isLoading && <ActivityIndicator color="#f06" />}
-          {!isLoading && <Text style={styles.contentTxt}>{amount}</Text>}
+    <View style={styles.card}>
+      <View style={styles.col}>
+        <View style={styles.row}><Text style={styles.label}>{label}</Text></View>
+        <View style={styles.row}>
+          <TouchableHighlight style={styles.btn} onPress={handleDecrement} onLongPress={handleDecrementLong}>
+            <View><Text style={styles.btnTxt}>-</Text></View>
+          </TouchableHighlight>
+          <View style={styles.content}>
+            {isLoading && <ActivityIndicator color="#f06" />}
+            {!isLoading && <Text style={styles.contentTxt}>{amount}</Text>}
+          </View>
+          <TouchableHighlight style={styles.btn} onPress={handleIncrement} onLongPress={handleIncrementLong}>
+            <View><Text style={styles.btnTxt}>+</Text></View>
+          </TouchableHighlight>
         </View>
-        <TouchableHighlight style={styles.btn} onPress={handleIncrement} onLongPress={handleIncrementLong}>
-          <View><Text style={styles.btnTxt}>+</Text></View>
-        </TouchableHighlight>
-      </View>
-      {isLoading &&  <View style={styles.row}><Text style={styles.info}>Pobieranie danych...</Text></View>}
-      {!isLoading && updatedDate && <View style={styles.row}><Text style={styles.info}>Ostatnia zmiana: {updatedDate}</Text></View>}
+        {isLoading &&  <View style={styles.row}><Text style={styles.info}>Pobieranie danych...</Text></View>}
+        {!isLoading && updatedDate && <View style={styles.row}><Text style={styles.info}>Ostatnia zmiana: {updatedDate}</Text></View>}
+      </View>      
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  card: {
+    height: 200,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+    elevation: 3,
+    borderRadius: 15,
+  },
   col: {
     marginTop: 25,
     marginBottom: 25,
