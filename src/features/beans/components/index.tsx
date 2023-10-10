@@ -4,8 +4,9 @@ import { fetchAllBeans, updateAmount } from "..";
 import { Status } from "src/types";
 import { Beans, BeansUpdate } from "../types";
 import BeansList from "./BeansList";
+import { View, Text, TouchableHighlight } from "react-native";
 
-function BeansConnector() {
+function BeansConnector({ navigation }: { navigation: any }) {
   const dispatch = useAppDispatch();
 
   const allBeans: Beans[] = useAppSelector(selectAllBeans);
@@ -15,14 +16,21 @@ function BeansConnector() {
     dispatch(updateAmount({ id, amount }));
   };
   return (
-    <BeansList
-      items={allBeans}
-      status={beansStatus}
-      fetchAll={() => {
-        dispatch(fetchAllBeans());
-      }}
-      updateItemAmount={handleUpdateItemAmount}
-    />
+    <View>
+      <TouchableHighlight onPress={() =>
+        navigation.navigate('Settings')}>
+          <View><Text>Settings</Text></View>
+      </TouchableHighlight>
+      <BeansList
+        items={allBeans}
+        status={beansStatus}
+        fetchAll={() => {
+          dispatch(fetchAllBeans());
+        }}
+        updateItemAmount={handleUpdateItemAmount}
+      />
+    </View>
+
   );
 }
 
