@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
-import beansReducer from "../features/beans";
+import beans from "src/features/beans";
+import settings from "src/features/settings";
 
 const rootReducer = combineReducers({
-  beans: beansReducer,
+  beans,
+  settings,
 });
 
 export default rootReducer;
